@@ -1,0 +1,35 @@
+<!doctype html>
+
+<link rel="icon" href="static/praline.png" type="image/x-icon">
+<script src="https://unpkg.com/@strudel/repl@latest"></script>
+<strudel-editor id="editor"></strudel-editor>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #0b253f;
+  }
+  strudel-editor {
+
+  }
+  .cm-content {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    padding: 20px;
+    background-color: transparent;
+  }
+</style>
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const fileName = urlParams.get('file') || 'default';
+
+  fetch(`./scores/${fileName}.js`)
+    .then(response => response.text())
+    .then(content => {
+      const escapedContent = content
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+      document.getElementsByClassName('cm-content')[0].innerHTML = escapedContent;
+    })
+    .catch(error => console.error('Error loading file:', error));
+</script>
